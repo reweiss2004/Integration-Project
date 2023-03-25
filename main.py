@@ -113,8 +113,8 @@ def store_room():
 def shop():
     print("You enter the shop. It more closely resembles a bar than a shop."
           " There is a menu on the table. It reads:\n")
-    print("(1).   Bread  - $0.50 per loaf")
-    print("(2).   Wine   - $3.00 per bottle")
+    print("(1).   Bread  - $2.50 per loaf")
+    print("(2).   Wine   - $4.00 per bottle")
     print("(3).   Cookie - $1.25 each\n\nAnything strike your fancy? When "
           "you're done, you may (back) away from the counter.")
 
