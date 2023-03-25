@@ -202,24 +202,9 @@ def shop():
                   " 'back' if you're done.)")
 
 
-def main():
-    print("\n>>>Welcome to my Integration project!")
-    print("Anything you see in parentheses, you can do.")
-    print("For example: when you're ready, press (start).")
-    still_in_loop = True
-    while still_in_loop:
-        action = input("\nAction: ")
-        if action == 'start':
-            still_in_loop = False
-            print("\n|  |  |  |  |  |  G A M E   S T A R T  |  |  |  |  |  |")
-            jail_cell()
-        else:
-            print("Not ready? All good! Relax, and (start) when you're ready.")
-
-
 def puzzle_room():
     print("\n>>>You are in the Puzzle room.")
-    print("You can go (west) from here.")
+    print("You can go (west) and (south) from here.")
     print("On the northern (wall), there is a small hole in the wall.")
     print("You also see a (squirrel) here.")
 
@@ -298,6 +283,22 @@ def exit():
     print("You made it to the end of the program!")
     print("There's still a lot more I want to add, but for now this is it.")
     print("Thank you for playing!")
+    quit()
+
+
+def main():
+    print("\n>>>Welcome to my Integration project!")
+    print("Anything you see in parentheses, you can do.")
+    print("For example: when you're ready, press (start).")
+    still_in_loop = True
+    while still_in_loop:
+        action = input("\nAction: ")
+        if action == 'start':
+            still_in_loop = False
+            print("\n|  |  |  |  |  |  G A M E   S T A R T  |  |  |  |  |  |")
+            jail_cell()
+        else:
+            print("Not ready? All good! Relax, and (start) when you're ready.")
 
 
 # Call to main
@@ -332,4 +333,3 @@ main()
 
 # Shortcut operators, like += and -=, iterate. They add one to itself.
 # total += 1 is the same as total = total + 1, the same with a minus.
-
