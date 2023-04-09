@@ -16,8 +16,8 @@ import random
 
 # I will use this for navigation. I will exclude invalid inputs if it does not
 # align with the map of the dungeon I have created.
-validDirections = ['north', 'south', 'east', 'west', 'up', 'down']
-#                    0        1        2       3      4       5
+validActions = ['1', '2', '3', '4', '5', '6']
+#                0    1    2    3    4    5
 
 # Global Variables. These are going to be keys. These will change to True once
 # the user solves a puzzle or interacts with something.
@@ -32,32 +32,34 @@ radius_key = False
 # obtained the jail key.
 
 def jail_cell():
-    print("\n>>>You are in the jail cell.")
     global jail_door_unlocked
-
     if jail_door_unlocked:
-        print("You can go (south) from here.")
         still_in_loop = True
         while still_in_loop:
-            action = input("\nAction: ")
-            if action == validDirections[1]:
+            print("\n>>>You are in the jail cell.")
+            print("[GENERAL DESCRIPTION OF ROOM]")
+            print("You can go south from here.")
+            action = input("\nActions:\n1.) South\n\n>Action: ")
+            if action == validActions[0]:
                 still_in_loop = False
                 center_room()
             else:
                 print("Invalid option.")
 
     else:
+        global jail_key
+        still_in_loop = True
+        print("\n>>>You are in the jail cell.")
+        print("[GENERAL DESCRIPTION OF ROOM]")
         print("There is a (bed) in the corner, and a (locked door) on the "
               "south wall.")
-        global jail_key
-
-        still_in_loop = True
         while still_in_loop:
-            action = input("\nAction: ")
-            if action == 'bed':
+            action = input("\nActions:\n1.) Inspect Bed\n2.) Try the Locked "
+                           "Door\n\n>Action: ")
+            if action == validActions[0]:
                 print("You search for and find the jail key.")
                 jail_key = True
-            elif action == 'locked door':
+            elif action == validActions[1]:
                 if jail_key:
                     print("You unlock the locked door, and continue on into "
                           "the next room.\nCongratulations! You know how to "
@@ -69,45 +71,50 @@ def jail_cell():
                     print("Wow! That door sure looks locked to me. Good thing "
                           "there's a keyhole! Now, where to find the key..")
             else:
-                print("Oops! Remember, only the words in parentheses () "
-                      "can be typed.")
+                print("ERROR: Invalid option.\nPlease enter the number"
+                      " corresponding to the action you want to perform.")
 
 
 # This is the center room, between the jail cell and store room.
 def center_room():
-    print("\n>>>You are in the center room.")
-    print("You can go (north), (south), or (east) from here.")
     still_in_loop = True
     while still_in_loop:
-        action = input("\nAction: ")
-        if action == validDirections[0]:
+        print("\n>>>You are in the center room.")
+        print("[GENERAL DESCRIPTION OF ROOM]")
+        print("You can go (north), (south), or (east) from here.")
+        action = input("\nActions:\n1.) North\n2.) South\n3.) East"
+                       "\n\n>Action: ")
+        if action == validActions[0]:
             still_in_loop = False
             jail_cell()
-        elif action == validDirections[1]:
+        elif action == validActions[1]:
             still_in_loop = False
             store_room()
-        elif action == validDirections[2]:
+        elif action == validActions[2]:
             still_in_loop = False
             puzzle_room()
         else:
-            print("Invalid option.")
+            print("ERROR: Invalid option.\nPlease enter the number "
+                  "corresponding to the action you want to perform.")
 
 
 # Here is the store room. Inside of it is a shop.
 def store_room():
     still_in_loop = True
-    print("\n>>>You are in the Store Room.")
-    print("You can go (north) from here.\nHere, you can see a (shop).")
     while still_in_loop:
-        action = input("Action: ")
-        if action == validDirections[0]:
+        print("\n>>>You are in the Store Room.")
+        print("You can go (north) from here.\nHere, you can see a (shop).")
+        action = input("\nActions:\n1.) North\n2.) Enter the Shop"
+                       "\n\n>Action: ")
+        if action == validActions[0]:
             still_in_loop = False
             center_room()
-        elif action == 'shop':
+        elif action == validActions[1]:
             still_in_loop = False
             shop()
         else:
-            print("Invalid option.")
+            print("ERROR: Invalid option.\nPlease enter the number "
+                  "corresponding to the action you want to perform.")
 
 
 def shop():
@@ -115,8 +122,8 @@ def shop():
           " There is a menu on the table. It reads:\n")
     print("(1).   Bread  - $2.50 per loaf")
     print("(2).   Wine   - $4.00 per bottle")
-    print("(3).   Cookie - $1.25 each\n\nAnything strike your fancy? When "
-          "you're done, you may (back) away from the counter.")
+    print("(3).   Cookie - $1.25 each")
+    print("(4).   Back away from the counter.\n")
 
     bread = 0
     wine = 0
@@ -132,19 +139,20 @@ def shop():
         # I combat this by using try/except to force their answer to change to
         # an integer, then use abs() to force it to be positive.
 
-        if action == '1':
+        if action == validActions[0]:
             invalid_number = True
             while invalid_number:
                 try:
                     bread = abs(int(input("How many loaves of bread? ")))
                 except ValueError:
                     print("- Unfortunately, you have to buy "
-                          "the loaves in full.")
+                          "the loaves in full.\n(Please enter a positive"
+                          " integer.)")
                 else:
                     invalid_number = False
             print()
 
-        elif action == '2':
+        elif action == validActions[1]:
             invalid_number = True
             while invalid_number:
                 try:
@@ -152,12 +160,12 @@ def shop():
                 except ValueError:
                     print(
                         "- Unfortunately, you have to buy the bottles in "
-                        "full.")
+                        "full.\n(Please enter a positive integer.)")
                 else:
                     invalid_number = False
             print()
 
-        elif action == '3':
+        elif action == validActions[2]:
             invalid_number = True
             while invalid_number:
                 try:
@@ -165,7 +173,8 @@ def shop():
                 except ValueError:
                     print(
                         "- Unfortunately, you have to buy the cookies in "
-                        "full. Why wouldn't you buy a full cookie?!")
+                        "full. Why wouldn't you buy a full cookie?!\n(Please"
+                        "enter a positive integer.)")
                 else:
                     invalid_number = False
             print()
@@ -175,7 +184,7 @@ def shop():
         # If the total is 0, there is no message besides 'Ehh, never-mind.' If
         # the total is greater than 0, it prints the calculated message,
         # breaks the loop, and returns to the store room that the shop is in.
-        elif action == 'back':
+        elif action == validActions[3]:
             total_price = float(bread * 2.50 + wine * 4.00 + cookie * 1.25)
             if total_price > 0:
                 print("With your", bread, "loaves of bread,", end=' ')
@@ -198,27 +207,30 @@ def shop():
         # If the input is anything other than '1', '2', '3', or 'back', this
         # error message is displayed until a valid value is entered.
         else:
-            print("Sorry, we don't have those here! (Please enter a number, or"
-                  " 'back' if you're done.)")
+            print("ERROR: Invalid option.\nPlease enter the number "
+                  "corresponding to the action you want to perform.\n")
 
 
 def puzzle_room():
-    print("\n>>>You are in the Puzzle room.")
-    print("You can go (west) and (south) from here.")
-    print("On the northern (wall), there is a small hole in the wall.")
-    print("You also see a (squirrel) here.")
-
     still_in_loop = True
     while still_in_loop:
-        action = input("\nAction: ")
-        if action == validDirections[3]:
+        print("\n>>>You are in the Puzzle room.")
+        print("You can go (west) and (south) from here.")
+        print("On the northern (wall), there is a small hole in the wall.")
+        print("You also see a (squirrel) here.")
+        action = input("\nActions:\n1.) South\n2.) West\n3.) Inspect the "
+                       "wall\n4.) Talk to the Squirrel\n\n>Action: ")
+        # south
+        if action == validActions[0]:
+            exit()
+
+        # west
+        elif action == validActions[1]:
             still_in_loop = False
             center_room()
 
-        elif action == validDirections[1]:
-            exit()
-
-        elif action == 'wall':
+        # wall
+        elif action == validActions[2]:
             print("You find a note! On it reads the following:\n")
             print("Area = Pi * Radius squared!\nDiameter = 2 * Radius!\n")
             print("Ugh, Pi?! I hate math!")
@@ -226,7 +238,7 @@ def puzzle_room():
         # I'm probably just going to make this elif into its own separate
         # 'squirrel_dialogue()', but I feel like that would make it even more
         # of a mess than it already is.
-        elif action == 'squirrel':
+        elif action == validActions[3]:
             if not radius_key:
                 print("\"" + "Hey, " * 3, "Human!\", says the squirrel.")
                 print("\"I've got a question for ya! Get it right in under "
@@ -237,7 +249,7 @@ def puzzle_room():
                                        "anything else to deny him: ")
                 if squirrelanswer == 'yes':
                     still_in_loop = False
-                    squirrelgame()
+                    squirrel_game()
                 else:
                     print("\"Fiiine..\", he says. \"But I've got a shiny key, "
                           "and you dont!\"")
@@ -246,22 +258,22 @@ def puzzle_room():
         else:
             print("Invalid option.")
 
+    # I want to give the player the Radius Key if they get the answers right,
+    # but I'm at a loss at how to do this. I'm just going to submit what I have
+    # and hope to amend my grade later on.
 
-# I want to give the player the Radius Key if they get the answers right,
-# but I'm at a loss at how to do this. I'm just going to submit what I have
-# and hope to amend my grade later on.
 
-def squirrelgame():
+# Here, the random number is running through a calculation and assigned a
+# value that the player has to match.
+def calculate_diameter(radius_info):
+    diameter = 2 * radius_info
+    return diameter
+
+
+def squirrel_game():
     radius = random.randint(1, 5)
 
-    # Here, the random number is running through a calculation and assigned a
-    # value that the player has to match.
-    def calculate_diameter(radius_info):
-        diameter = 2 * radius_info
-        return diameter
-
     for tries in range(2, -1, -1):
-
         answer = int(input("\"If the radius is " + str(radius) +
                            ", what is the diameter of a circle?\"\n"))
 
@@ -288,17 +300,20 @@ def exit():
 
 def main():
     print("\n>>>Welcome to my Integration project!")
-    print("Anything you see in parentheses, you can do.")
-    print("For example: when you're ready, press (start).")
+    print("Anything you see in the 'Actions' list you can do by typing the "
+          "number next to the action you wish to execute.")
+    print("For example: when you're ready, type '1' to Start the game.")
     still_in_loop = True
     while still_in_loop:
-        action = input("\nAction: ")
-        if action == 'start':
+        action = input("\nActions:\n1.) Start Game\n\n>Action: ")
+        if action == validActions[0]:
             still_in_loop = False
             print("\n|  |  |  |  |  |  G A M E   S T A R T  |  |  |  |  |  |")
             jail_cell()
         else:
-            print("Not ready? All good! Relax, and (start) when you're ready.")
+            print("Oops! Be sure to enter the number corresponding to the "
+                  "action you want to take.\nFor example, typing '1' will "
+                  "start the game.")
 
 
 # Call to main
@@ -326,7 +341,7 @@ main()
 
 # != means 'not equal to'
 
-# 'and' is self explanatory, used in logical 'if' or 'while' statements.
+# 'and' is self-explanatory, used in logical 'if' or 'while' statements.
 # if A and B, then C. Both must be 'true'.
 
 # 'or': One, or the other, or both must be true.
