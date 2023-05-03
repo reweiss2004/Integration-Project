@@ -37,8 +37,11 @@ def jail_cell():
         still_in_loop = True
         while still_in_loop:
             print("\n>>>You are in the jail cell.")
-            print("[GENERAL DESCRIPTION OF ROOM]")
-            print("You can go south from here.")
+            print("[It's dark, dreary, and gross in here.]")
+            print("[You recognize this room as the place you started. "
+                  "There isn't much here other than a bed and bad interior "
+                  "design.]")
+            print("You can go (south) from here.")
             action = input("\nActions:\n1.) South\n\n>Action: ")
             if action == validActions[0]:
                 still_in_loop = False
@@ -50,15 +53,21 @@ def jail_cell():
         global jail_key
         still_in_loop = True
         print("\n>>>You are in the jail cell.")
-        print("[GENERAL DESCRIPTION OF ROOM]")
+        print("[It's dark, dreary, and gross in here.]")
         print("There is a (bed) in the corner, and a (locked door) on the "
               "south wall.")
         while still_in_loop:
             action = input("\nActions:\n1.) Inspect Bed\n2.) Try the Locked "
                            "Door\n\n>Action: ")
+
             if action == validActions[0]:
-                print("You search for and find the jail key.")
-                jail_key = True
+                if not jail_key:
+                    print("You search for and find the jail key.")
+                    jail_key = True
+                else:
+                    print("This is where you found the jail key. Surprisingly"
+                          " enough, it's not there anymore. You picked it up.")
+
             elif action == validActions[1]:
                 if jail_key:
                     print("You unlock the locked door, and continue on into "
@@ -68,8 +77,8 @@ def jail_cell():
                     still_in_loop = False
                     center_room()
                 elif not jail_key:
-                    print("Wow! That door sure looks locked to me. Good thing "
-                          "there's a keyhole! Now, where to find the key..")
+                    print("You jiggle the handle, and the door doesn't budge."
+                          " Locked. Now, where to find the key..")
             else:
                 print("ERROR: Invalid option.\nPlease enter the number"
                       " corresponding to the action you want to perform.")
@@ -80,7 +89,8 @@ def center_room():
     still_in_loop = True
     while still_in_loop:
         print("\n>>>You are in the center room.")
-        print("[GENERAL DESCRIPTION OF ROOM]")
+        print("[It's calm in here. Nice and quiet. The wooden floorboards"
+              " creak slightly as you step on them.]")
         print("You can go (north), (south), or (east) from here.")
         action = input("\nActions:\n1.) North\n2.) South\n3.) East"
                        "\n\n>Action: ")
@@ -215,14 +225,20 @@ def puzzle_room():
     still_in_loop = True
     while still_in_loop:
         print("\n>>>You are in the Puzzle room.")
-        print("You can go (west) and (south) from here.")
-        print("On the northern (wall), there is a small hole in the wall.")
+        print("You can go (west) back to the center room or (south) to"
+              " a locked door from here.")
+        print("On the northern (wall), there is a small hole you could easily"
+              " fit your hand into. There seems to be a slip of paper inside.")
         print("You also see a (squirrel) here.")
         action = input("\nActions:\n1.) South\n2.) West\n3.) Inspect the "
                        "wall\n4.) Talk to the Squirrel\n\n>Action: ")
         # south
         if action == validActions[0]:
-            exit()
+            if radius_key is True and jail_key is True:
+                exit()
+            else:
+                print("You check the door. There are two keyholes, and you "
+                      "only have one!\nMaybe that squirrel has what you need.")
 
         # west
         elif action == validActions[1]:
@@ -232,8 +248,11 @@ def puzzle_room():
         # wall
         elif action == validActions[2]:
             print("You find a note! On it reads the following:\n")
-            print("Area = Pi * Radius squared!\nDiameter = 2 * Radius!\n")
+            print("~~~!!!~~~")
+            print("Area = Pi * Radius squared!\nDiameter = 2 * Radius!")
+            print("~~~!!!~~~")
             print("Ugh, Pi?! I hate math!")
+
 
         # I'm probably just going to make this elif into its own separate
         # 'squirrel_dialogue()', but I feel like that would make it even more
@@ -244,10 +263,10 @@ def puzzle_room():
                 print("\"I've got a question for ya! Get it right in under "
                       "three tries and I'll give you this sick key! "
                       "Whaddya say?\"\n")
-                squirrelanswer = input("How do you respond?\nType (yes) to "
+                squirrelanswer = input("How do you respond?\nType (y) to "
                                        "take him up on his challenge, or "
                                        "anything else to deny him: ")
-                if squirrelanswer == 'yes':
+                if squirrelanswer == 'y' or squirrelanswer == 'Y':
                     still_in_loop = False
                     squirrel_game()
                 else:
@@ -257,10 +276,6 @@ def puzzle_room():
                 print("\"I already gave you your key! scram!\"")
         else:
             print("Invalid option.")
-
-    # I want to give the player the Radius Key if they get the answers right,
-    # but I'm at a loss at how to do this. I'm just going to submit what I have
-    # and hope to amend my grade later on.
 
 
 # Here, the random number is running through a calculation and assigned a
@@ -273,15 +288,19 @@ def calculate_diameter(radius_info):
 def squirrel_game():
     radius = random.randint(1, 5)
 
+    global radius_key
+
     for tries in range(2, -1, -1):
         answer = int(input("\"If the radius is " + str(radius) +
                            ", what is the diameter of a circle?\"\n"))
 
         # Here is where I'd reward the player with the radius key.
         if answer == calculate_diameter(radius):
-            print("\"Correct! Here's your prize!\"")
+            print("\"Correct! Here's your prize!\"\nThe squirrel hands you the"
+                  " Radius Key. It looks like it would fit in the door to"
+                  " the south!")
+            radius_key = True
             puzzle_room()
-            break
 
         else:
             print("\"Wrong! Tries remaining:", tries)
@@ -291,9 +310,9 @@ def squirrel_game():
             puzzle_room()
 
 
+# This displays when you access the south room after acquiring the radius key.
 def exit():
-    print("You made it to the end of the program!")
-    print("There's still a lot more I want to add, but for now this is it.")
+    print("Freedom! You made it to the end of the program!")
     print("Thank you for playing!")
     quit()
 
@@ -341,10 +360,8 @@ main()
 
 # != means 'not equal to'
 
-# 'and' is self-explanatory, used in logical 'if' or 'while' statements.
-# if A and B, then C. Both must be 'true'.
-
-# 'or': One, or the other, or both must be true.
+# 'or': One of the two variables or both of the variables must be true in
+# order to return 'True'.
 
 # Shortcut operators, like += and -=, iterate. They add one to itself.
 # total += 1 is the same as total = total + 1, the same with a minus.
