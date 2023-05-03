@@ -1,17 +1,20 @@
 # Ethan Weiss
 
 # I decided to reformat my original CYOA game into more of a dungeon-crawler.
-# The player will be presented with a series of rooms they can walk in and out.
-# In one of the rooms will be a shop, where they will buy a key and health pot
-# if they want to progress further. Another room will have a puzzle that makes
-# you find the radius of a circle.
-# Eventually they will escape the dungeon, and that will be the end of it.
+# The player will be presented with a series of rooms they can walk in and out,
+# having to solve puzzles along the way.
+# In one of the rooms will be a shop, where they will pretend to buy food
+# (it won't really be too consequential).
+# Another room will have a puzzle that makes you find the radius of a circle
+# to get a key that unlocks the exit door.
+# They will escape the dungeon, and that will be the end of it.
 
 # Inspiration comes from www.makeuseof.com/python-text-adventure-game-create/
 # I'll try and keep most of the code unique, but the general framework will
 # be pretty similar - using def() functions to move between rooms.
 
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| #
+# This is used in the puzzle to generate a unique answer every time.
 import random
 
 # I will use this for navigation. I will exclude invalid inputs if it does not
